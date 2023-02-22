@@ -1,6 +1,6 @@
-# n8n-nodes-vcloud
+# n8n-nodes-globedom
 
-**VMware vCloud Director**
+**Globedom / Internic XML API**
 
 
 

@@ -11,7 +11,7 @@ class globedom {
                 displayName: 'Server',
                 name: 'server',
                 type: 'string',
-                default: 'susi.globedom.com',
+                default: 'https://susi.globedom.com',
             },
             {
                 displayName: 'Username',
@@ -24,7 +24,7 @@ class globedom {
                 name: 'password',
                 type: 'string',
                 default: '89vc8Dd87R',
-            },
+            }
         ];
     }
 }

@@ -10,7 +10,7 @@ export class globedom implements ICredentialType {
 			displayName: 'Server',
 			name: 'server',
 			type: 'string',
-			default: 'susi.globedom.com',
+			default: 'https://susi.globedom.com',
 		},
 		{
 			displayName: 'Username',
@@ -23,6 +23,6 @@ export class globedom implements ICredentialType {
 			name: 'password',
 			type: 'string',
 			default: '89vc8Dd87R',
-		},		
+		}
 	];
 }
