@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Globedom = void 0;
+exports.globedom = void 0;
 const GenericFunctions_1 = require("./GenericFunctions");
-class Globedom {
+class globedom {
     constructor() {
         this.description = {
             displayName: 'Globedom',
@@ -575,5 +575,5 @@ class Globedom {
         return this.prepareOutputData(returnData);
     }
 }
-exports.Globedom = Globedom;
+exports.globedom = globedom;
 //# sourceMappingURL=globedom.node.js.map

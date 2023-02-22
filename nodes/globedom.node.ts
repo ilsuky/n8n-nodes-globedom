@@ -2,7 +2,7 @@ import { IExecuteFunctions } from 'n8n-core';
 import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { globedomRequest, getauthtoken } from './GenericFunctions';
 
-export class Globedom implements INodeType {
+export class globedom implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Globedom',
 		name: 'globedom',
