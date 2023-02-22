@@ -60,6 +60,8 @@ export async function globedomRequest (
 		},		
 		body,
 		uri: `${credentials.server}:2109/susi/account/login/*/*/*/`,
+		//@ts-ignore
+		resolveWithFullResponse: true,
 		rejectUnauthorized: false,
 	};
 

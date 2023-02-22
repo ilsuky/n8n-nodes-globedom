@@ -36,6 +36,7 @@ async function getauthtoken() {
         },
         body,
         uri: `${credentials.server}:2109/susi/account/login/*/*/*/`,
+        resolveWithFullResponse: true,
         rejectUnauthorized: false,
     };
     console.log(options);
