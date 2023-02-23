@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getauthtoken = exports.globedomRequest = void 0;
 const axios_1 = require("axios");
+const xml_js_1 = require("xml-js");
 async function globedomRequest(endpoint, qs = {}, authsid = '') {
     const credentials = await this.getCredentials('globedom');
     return credentials;
@@ -17,9 +18,9 @@ async function getauthtoken() {
         },
         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
-    console.log(data);
-    let authsid = "";
-    return authsid;
+    const json = xml_js_1.xml2json(data);
+    console.log(json);
+    return json;
 }
 exports.getauthtoken = getauthtoken;
 //# sourceMappingURL=GenericFunctions.js.map

@@ -12,6 +12,7 @@ import {
 	ILoadOptionsFunctions
 } from 'n8n-workflow';
 
+import { xml2json } from 'xml-js';
 
 export async function globedomRequest (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
@@ -50,10 +51,10 @@ export async function globedomRequest (
       },
     );
 
-    console.log(data);
+	const json = xml2json(data, );
 
-	let authsid : string = "";	
-	//console.log(authsid);		
-	return authsid;
+    console.log(json);
+	
+	return json;
 
 }
