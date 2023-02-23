@@ -20,7 +20,8 @@ async function getauthtoken() {
     });
     const json = xml_js_1.xml2json(data);
     console.log(json);
-    return json;
+    let authsid = "";
+    return authsid;
 }
 exports.getauthtoken = getauthtoken;
 //# sourceMappingURL=GenericFunctions.js.map

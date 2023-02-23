@@ -33,8 +33,6 @@ export async function globedomRequest (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 ) {
 	
-	
-	
 	const credentials = await this.getCredentials('globedom') as IDataObject;
 	const body : string = `<request><uid>${credentials.uid}</uid><pwd>${credentials.password}</pwd></request>`;
 
@@ -55,6 +53,7 @@ export async function globedomRequest (
 
     console.log(json);
 	
-	return json;
+	let authsid : string = "";
+	return authsid;
 
 }
