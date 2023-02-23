@@ -1,25 +1,47 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getauthtoken = exports.globedomRequest = void 0;
-const axios_1 = require("axios");
-const xml_js_1 = require("xml-js");
 async function globedomRequest(endpoint, qs = {}, authsid = '') {
     const credentials = await this.getCredentials('globedom');
-    return credentials;
+    const options = {
+        headers: {},
+        method: 'GET',
+        qs,
+        uri: `${credentials.server}${endpoint}`,
+    };
+    const returnr = await this.helpers.request(options);
+    const dataObject = {};
+    let list = [];
+    const splitData = returnr.split('\n');
+    for (let row of splitData) {
+        if (row.includes(":")) {
+            const split = row.split(':');
+            dataObject[split[0]] = split[1].trim();
+        }
+        else if (row.length > 0) {
+            list.push(row);
+        }
+    }
+    dataObject.list = list;
+    return dataObject;
 }
 exports.globedomRequest = globedomRequest;
 async function getauthtoken() {
     const credentials = await this.getCredentials('globedom');
     const body = `<request><uid>${credentials.uid}</uid><pwd>${credentials.password}</pwd></request>`;
-    const https = require('https');
-    const { data } = await axios_1.default.put(`${credentials.server}:2109/susi/account/login/*/*/*/`, { body }, {
+    const options = {
+        method: 'PUT',
         headers: {
-            'Content-Type': 'text/xml'
+            'content-type': 'text/xml',
         },
-        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-    });
-    const json = xml_js_1.xml2json(data);
-    console.log(json);
+        body,
+        url: `${credentials.server}:2109/susi/account/login/*/*/*/`,
+        skipSslCertificateValidation: true,
+        returnFullResponse: true
+    };
+    console.log(options);
+    const response = await this.helpers.httpRequest(options);
+    console.log(response);
     let authsid = "";
     return authsid;
 }
