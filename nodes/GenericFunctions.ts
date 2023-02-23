@@ -29,19 +29,6 @@ export async function globedomRequest (
 
 	const returnr = await this.helpers.request!(options);
 	const dataObject:IDataObject = {};
-	let list = [];
-	const splitData = returnr.split('\n');
-	for(let row of splitData){
-
-	  if(row.includes(":")){
-		const split = row.split(':');
-		dataObject[split[0]] = split[1].trim();
-	  }
-	  else if(row.length >0 ){
-		list.push(row);
-	  }
-	}
-	dataObject.list = list;
 	return dataObject;
 }
 
@@ -61,9 +48,7 @@ export async function globedomRequest (
 		},		
 		body,
 		url: `${credentials.server}:2109/susi/account/login/*/*/*/`,
-		//@ts-ignore		
-		skipSslCertificateValidation: true,
-		returnFullResponse: true
+		skipSslCertificateValidation: true
 	};
 
 	console.log(options);
@@ -72,5 +57,4 @@ export async function globedomRequest (
 	let authsid : string = "";	
 	//console.log(authsid);		
 	return authsid;
-
 }
