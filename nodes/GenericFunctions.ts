@@ -37,6 +37,8 @@ export async function globedomRequest (
 	const credentials = await this.getCredentials('globedom') as IDataObject;
 	const body : string = `<request><uid>${credentials.uid}</uid><pwd>${credentials.password}</pwd></request>`;
 
+	const https = require('https');
+
     const { data } = await axios.put(
       `${credentials.server}:2109/susi/account/login/*/*/*/`,
       { body },
@@ -44,6 +46,7 @@ export async function globedomRequest (
         headers: {
           'Content-Type': 'text/xml'
         },
+		httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       },
     );
 

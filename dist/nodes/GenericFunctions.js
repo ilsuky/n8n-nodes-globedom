@@ -10,10 +10,12 @@ exports.globedomRequest = globedomRequest;
 async function getauthtoken() {
     const credentials = await this.getCredentials('globedom');
     const body = `<request><uid>${credentials.uid}</uid><pwd>${credentials.password}</pwd></request>`;
+    const https = require('https');
     const { data } = await axios_1.default.put(`${credentials.server}:2109/susi/account/login/*/*/*/`, { body }, {
         headers: {
             'Content-Type': 'text/xml'
         },
+        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
     console.log(JSON.stringify(data, null, 4));
     let authsid = "";
