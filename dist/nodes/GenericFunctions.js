@@ -17,7 +17,7 @@ async function getauthtoken() {
         },
         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
-    console.log(JSON.stringify(data, null, 4));
+    console.log(data);
     let authsid = "";
     return authsid;
 }

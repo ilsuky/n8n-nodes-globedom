@@ -50,7 +50,7 @@ export async function globedomRequest (
       },
     );
 
-    console.log(JSON.stringify(data, null, 4));
+    console.log(data);
 
 	let authsid : string = "";	
 	//console.log(authsid);		
