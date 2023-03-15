@@ -41,7 +41,7 @@ async function getauthtoken() {
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
     console.log(json);
-    let authsid = "";
+    let authsid = json.response.token;
     return authsid;
 }
 exports.getauthtoken = getauthtoken;

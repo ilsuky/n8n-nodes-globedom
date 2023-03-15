@@ -75,7 +75,7 @@ export async function globedomRequest (
 	const json = await parser.parseStringPromise(response as string);
 	
 	console.log(json);
-	let authsid : string = "";	
+	let authsid = json.response.token;	
 	//console.log(authsid);		
 	return authsid;
 }
