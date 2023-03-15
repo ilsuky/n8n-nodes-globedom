@@ -48,7 +48,15 @@ export async function globedomRequest (
 	const json = await parser.parseStringPromise(response as string);
 	const logout = await tlogout.call(this,authsid);
 	
-	return json;
+	let rjson;
+	
+	if(json.multiresponse){
+		rjson = json.multiresponse.response;
+	} else {
+		rjson = json.response;
+	}
+	
+	return rjson;
 }
 
 /**
