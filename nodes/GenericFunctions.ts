@@ -47,12 +47,12 @@ export async function globedomRequest (
 
 	const response = await this.helpers.request!(options);
 	const json = await parser.parseStringPromise(response as string);
-
+	const logout = await tlogout.call(this,authsid);
 	return json;
 }
 
 /**
- * Get a Auth-Sid.
+ * Get a Auth-Token.
  */
  export async function getauthtoken (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
@@ -89,5 +89,44 @@ export async function globedomRequest (
 	//console.log(json);
 	let authsid = json.response.token;	
 	//console.log(authsid);		
+	return authsid;
+}
+
+/**
+ * Logout.
+ */
+ export async function tlogout (
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	authsid: string
+) {
+	const credentials = await this.getCredentials('globedom') as IDataObject;
+
+	const options: OptionsWithUri = {
+		headers: {
+			'content-type': 'text/xml',
+		},
+		method: 'GET',
+		uri: `${credentials.server}:2109/susi/account/logout/*/*/${authsid}/`,
+		json: false,
+		gzip: true,
+		rejectUnauthorized: false,
+	};
+
+	//console.log(options);
+	
+	const parserOptions = Object.assign(
+		{
+			mergeAttrs: true,
+			explicitArray: false,
+		}
+	);
+	const parser = new Parser(parserOptions);
+	
+	const response = await this.helpers.request!(options);
+	
+	const json = await parser.parseStringPromise(response as string);
+	
+	console.log(json);
+	
 	return authsid;
 }
