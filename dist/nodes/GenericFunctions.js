@@ -69,7 +69,6 @@ async function tlogout(authsid) {
     const parser = new xml2js_1.Parser(parserOptions);
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
-    console.log(json);
     return authsid;
 }
 exports.tlogout = tlogout;

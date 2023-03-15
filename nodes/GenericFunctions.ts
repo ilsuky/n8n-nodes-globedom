@@ -44,10 +44,10 @@ export async function globedomRequest (
 		}
 	);
 	const parser = new Parser(parserOptions);
-
 	const response = await this.helpers.request!(options);
 	const json = await parser.parseStringPromise(response as string);
 	const logout = await tlogout.call(this,authsid);
+	
 	return json;
 }
 
@@ -72,8 +72,6 @@ export async function globedomRequest (
 		rejectUnauthorized: false,
 	};
 
-	//console.log(options);
-	
 	const parserOptions = Object.assign(
 		{
 			mergeAttrs: true,
@@ -81,14 +79,10 @@ export async function globedomRequest (
 		}
 	);
 	const parser = new Parser(parserOptions);
-	
 	const response = await this.helpers.request!(options);
-	
 	const json = await parser.parseStringPromise(response as string);
+	let authsid = json.response.token;
 	
-	//console.log(json);
-	let authsid = json.response.token;	
-	//console.log(authsid);		
 	return authsid;
 }
 
@@ -112,8 +106,6 @@ export async function globedomRequest (
 		rejectUnauthorized: false,
 	};
 
-	//console.log(options);
-	
 	const parserOptions = Object.assign(
 		{
 			mergeAttrs: true,
@@ -121,12 +113,8 @@ export async function globedomRequest (
 		}
 	);
 	const parser = new Parser(parserOptions);
-	
 	const response = await this.helpers.request!(options);
-	
 	const json = await parser.parseStringPromise(response as string);
-	
-	console.log(json);
 	
 	return authsid;
 }

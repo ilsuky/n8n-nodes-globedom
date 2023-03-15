@@ -56,13 +56,21 @@ export class globedom implements INodeType {
 						value: 'domain-create',
 					},				
 					{
+						name: 'Check',
+						value: 'domain-check',
+					},
+					{
 						name: 'Status',
 						value: 'domain-status',
-					},
+					},					
 					{
 						name: 'Update',
 						value: 'domain-update',
 					},
+					{
+						name: 'Delete',
+						value: 'domain-delete',
+					},					
 					{
 						name: 'Show All',
 						value: 'domain-all',
@@ -147,7 +155,9 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-status',
-							'domain-update',							
+							'domain-check',
+							'domain-update',						
+							'domain-delete',						
 						],					
 					},
 				},
@@ -487,11 +497,10 @@ export class globedom implements INodeType {
 					
 					if (domains === 'domain-check') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
-						const tld = getPublicSuffix(domain)
-						const checkprice = this.getNodeParameter('checkprice', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain);
 					
-						const rbody = {"domain" : domain, "check-price": checkprice };
-						
+						const rbody = {};
+					
 						const newItem: INodeExecutionData = {
 							json: {},
 							binary: {},
@@ -502,10 +511,44 @@ export class globedom implements INodeType {
 						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 						returnData.push(newItem);												
 					}						
+
+					if (domains === 'domain-status') {
+						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain);
+					
+						const rbody = {};
+					
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/domain/status/" + tld + "/" + domain + "/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);												
+					}	
+
+					if (domains === 'domain-delete') {
+						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain);
+						
+						const rbody = {};
+					
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/domain/delete/" + tld + "/" + domain + "/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);												
+					}
 										
 					if (domains === 'domain-create') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
-						const tld = getPublicSuffix(domain)
+						const tld = getPublicSuffix(domain);
 						const ownerc = this.getNodeParameter('ownerc', itemIndex, '') as string;
 						const billingc = this.getNodeParameter('billingc', itemIndex, '') as string;
 						const adminc = this.getNodeParameter('adminc', itemIndex, '') as string;
@@ -531,6 +574,21 @@ export class globedom implements INodeType {
 				//--------------------------------------------------------
 				if(requests == 'contacts'){
 					const contacts = this.getNodeParameter('contacts',  0, '') as string;
+
+					if (contacts === 'contacts-all') {
+					
+						const rbody = {};
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/contact/all/*/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);												
+					}	
 
 					if (contacts === 'query-contact-list') {
 						const pattern = this.getNodeParameter('pattern', itemIndex, '') as string;
