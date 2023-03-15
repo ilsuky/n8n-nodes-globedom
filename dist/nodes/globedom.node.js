@@ -459,7 +459,7 @@ class globedom {
     }
     async execute() {
         const items = this.getInputData();
-        const { getPublicSuffix, domainWithoutSuffix } = require('tldts');
+        const { getPublicSuffix, getDomainWithoutSuffix } = require('tldts');
         const returnData = [];
         const length = items.length;
         const requests = this.getNodeParameter('requests', 0, '');
@@ -481,7 +481,7 @@ class globedom {
                     if (domains === 'domain-check') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
-                        const domainname = domainWithoutSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
@@ -494,7 +494,7 @@ class globedom {
                     if (domains === 'domain-status') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
-                        const domainname = domainWithoutSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
@@ -507,7 +507,7 @@ class globedom {
                     if (domains === 'domain-delete') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
-                        const domainname = domainWithoutSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
@@ -520,7 +520,7 @@ class globedom {
                     if (domains === 'domain-create') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
-                        const domainname = domainWithoutSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
                         const ownerc = this.getNodeParameter('ownerc', itemIndex, '');
                         const billingc = this.getNodeParameter('billingc', itemIndex, '');
                         const adminc = this.getNodeParameter('adminc', itemIndex, '');

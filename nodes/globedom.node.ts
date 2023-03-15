@@ -461,7 +461,7 @@ export class globedom implements INodeType {
 	
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		const { getPublicSuffix , domainWithoutSuffix } = require('tldts');
+		const { getPublicSuffix , getDomainWithoutSuffix } = require('tldts');
 		const returnData: INodeExecutionData[] = [];
 		const length = items.length;
 		
@@ -498,7 +498,7 @@ export class globedom implements INodeType {
 					if (domains === 'domain-check') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
 						const tld = getPublicSuffix(domain);
-						const domainname = domainWithoutSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
 						const rbody = {};
 					
 						const newItem: INodeExecutionData = {
@@ -515,7 +515,7 @@ export class globedom implements INodeType {
 					if (domains === 'domain-status') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
 						const tld = getPublicSuffix(domain);
-						const domainname = domainWithoutSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
 						
 						const rbody = {};
 					
@@ -533,7 +533,7 @@ export class globedom implements INodeType {
 					if (domains === 'domain-delete') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
 						const tld = getPublicSuffix(domain);
-						const domainname = domainWithoutSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
 						
 						const rbody = {};
 					
@@ -551,7 +551,7 @@ export class globedom implements INodeType {
 					if (domains === 'domain-create') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
 						const tld = getPublicSuffix(domain);
-						const domainname = domainWithoutSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
 						
 						const ownerc = this.getNodeParameter('ownerc', itemIndex, '') as string;
 						const billingc = this.getNodeParameter('billingc', itemIndex, '') as string;
