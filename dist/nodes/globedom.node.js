@@ -459,7 +459,7 @@ class globedom {
     }
     async execute() {
         const items = this.getInputData();
-        const { getPublicSuffix } = require('tldts');
+        const { getPublicSuffix, domainWithoutSuffix } = require('tldts');
         const returnData = [];
         const length = items.length;
         const requests = this.getNodeParameter('requests', 0, '');
@@ -481,42 +481,46 @@ class globedom {
                     if (domains === 'domain-check') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
+                        const domainname = domainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
                             binary: {},
                         };
-                        const endpoint = "/susi/domain/availability/" + tld + "/" + domain + "/" + authsid + "/";
+                        const endpoint = "/susi/domain/availability/" + tld + "/" + domainname + "/" + authsid + "/";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
                     if (domains === 'domain-status') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
+                        const domainname = domainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
                             binary: {},
                         };
-                        const endpoint = "/susi/domain/status/" + tld + "/" + domain + "/" + authsid + "/";
+                        const endpoint = "/susi/domain/status/" + tld + "/" + domainname + "/" + authsid + "/";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
                     if (domains === 'domain-delete') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
+                        const domainname = domainWithoutSuffix(domain);
                         const rbody = {};
                         const newItem = {
                             json: {},
                             binary: {},
                         };
-                        const endpoint = "/susi/domain/delete/" + tld + "/" + domain + "/" + authsid + "/";
+                        const endpoint = "/susi/domain/delete/" + tld + "/" + domainname + "/" + authsid + "/";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
                     if (domains === 'domain-create') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
+                        const domainname = domainWithoutSuffix(domain);
                         const ownerc = this.getNodeParameter('ownerc', itemIndex, '');
                         const billingc = this.getNodeParameter('billingc', itemIndex, '');
                         const adminc = this.getNodeParameter('adminc', itemIndex, '');
@@ -527,7 +531,7 @@ class globedom {
                             json: {},
                             binary: {},
                         };
-                        const endpoint = "/susi/domain/create/" + tld + "/" + domain + "/" + authsid + "/";
+                        const endpoint = "/susi/domain/create/" + tld + "/" + domainname + "/" + authsid + "/";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
                         returnData.push(newItem);
                     }
