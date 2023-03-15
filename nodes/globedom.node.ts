@@ -1,6 +1,7 @@
 import { IExecuteFunctions } from 'n8n-core';
 import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { globedomRequest, getauthtoken } from './GenericFunctions';
+import { parse } from 'tldts';
 
 export class globedom implements INodeType {
 	description: INodeTypeDescription = {
@@ -450,7 +451,7 @@ export class globedom implements INodeType {
 	
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		
+		const { getPublicSuffix } = require('tldts');
 		const returnData: INodeExecutionData[] = [];
 		const length = items.length;
 		
@@ -480,12 +481,13 @@ export class globedom implements INodeType {
 						
 						const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
 						
-						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 						returnData.push(newItem);												
 					}	
 					
 					if (domains === 'domain-check') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain)
 						const checkprice = this.getNodeParameter('checkprice', itemIndex, '') as string;
 					
 						const rbody = {"domain" : domain, "check-price": checkprice };
@@ -495,14 +497,15 @@ export class globedom implements INodeType {
 							binary: {},
 						};
 						
-						const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
+						const endpoint = "/susi/domain/availability/" + tld + "/" + domain + "/" + authsid + "/";
 						
-						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 						returnData.push(newItem);												
 					}						
 										
 					if (domains === 'domain-create') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain)
 						const ownerc = this.getNodeParameter('ownerc', itemIndex, '') as string;
 						const billingc = this.getNodeParameter('billingc', itemIndex, '') as string;
 						const adminc = this.getNodeParameter('adminc', itemIndex, '') as string;
@@ -516,9 +519,9 @@ export class globedom implements INodeType {
 							binary: {},
 						};
 						
-						const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
+						const endpoint = "/susi/domain/create/" + tld + "/" + domain + "/" + authsid + "/";
 						
-						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
 						returnData.push(newItem);												
 					}						
 				}
@@ -542,7 +545,7 @@ export class globedom implements INodeType {
 							
 							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
 							
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 							returnData.push(newItem);								
 						} else {
 							const rbody = {"pattern" : pattern, "extended-format" : "1"};
@@ -551,7 +554,7 @@ export class globedom implements INodeType {
 								binary: {},
 							};
 							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 							returnData.push(newItem);	
 						}
 						
@@ -580,7 +583,7 @@ export class globedom implements INodeType {
 							};
 							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
 							
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 							returnData.push(newItem);
 						
 						} else {
@@ -591,7 +594,7 @@ export class globedom implements INodeType {
 							};
 							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
 							
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid);
+							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 							returnData.push(newItem);							
 						}
 																				

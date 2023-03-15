@@ -44,11 +44,13 @@
     "nodelinter": "^0.1.9",
     "ts-jest": "^26.3.0",
     "tslint": "^6.1.2",
-    "typescript": "~4.3.5"
+    "typescript": "~4.3.5",
+	"tldts": "^5.6"
   },
   "dependencies": {
     "n8n-core": "~0.101.0",
-	"xml2js": "^0.4.23"
+	"xml2js": "^0.4.23",
+	"tldts": "^5.6"
   },
   "jest": {
     "transform": {

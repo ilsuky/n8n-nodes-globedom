@@ -20,7 +20,8 @@ export async function globedomRequest (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	endpoint: string,
 	qs: IDataObject = {},
-	authsid: string = ''
+	authsid: string = '',
+	method: string
 ) {
 	
 	const credentials = await this.getCredentials('globedom')  as IDataObject;
@@ -28,15 +29,26 @@ export async function globedomRequest (
 		headers: {
 			'content-type': 'text/xml',
 		},
-		method: 'GET',
+		method,
 		qs,
-		uri: `${credentials.server}${endpoint}`,
+		uri: `${credentials.server}:2109${endpoint}`,
 		rejectUnauthorized: false,
 	};
 
-	const returnr = await this.helpers.request!(options);
-	const dataObject:IDataObject = {};
-	return dataObject;
+	console.log(options);
+
+	const parserOptions = Object.assign(
+		{
+			mergeAttrs: true,
+			explicitArray: false,
+		}
+	);
+	const parser = new Parser(parserOptions);
+
+	const response = await this.helpers.request!(options);
+	const json = await parser.parseStringPromise(response as string);
+
+	return json;
 }
 
 /**
@@ -60,7 +72,7 @@ export async function globedomRequest (
 		rejectUnauthorized: false,
 	};
 
-	console.log(options);
+	//console.log(options);
 	
 	const parserOptions = Object.assign(
 		{
@@ -74,7 +86,7 @@ export async function globedomRequest (
 	
 	const json = await parser.parseStringPromise(response as string);
 	
-	console.log(json);
+	//console.log(json);
 	let authsid = json.response.token;	
 	//console.log(authsid);		
 	return authsid;
