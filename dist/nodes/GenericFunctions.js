@@ -4,10 +4,13 @@ exports.getauthtoken = exports.globedomRequest = void 0;
 async function globedomRequest(endpoint, qs = {}, authsid = '') {
     const credentials = await this.getCredentials('globedom');
     const options = {
-        headers: {},
+        headers: {
+            'content-type': 'text/xml',
+        },
         method: 'GET',
         qs,
         uri: `${credentials.server}${endpoint}`,
+        rejectUnauthorized: false,
     };
     const returnr = await this.helpers.request(options);
     const dataObject = {};
@@ -18,16 +21,18 @@ async function getauthtoken() {
     const credentials = await this.getCredentials('globedom');
     const body = `<request><uid>${credentials.uid}</uid><pwd>${credentials.password}</pwd></request>`;
     const options = {
-        method: 'PUT',
         headers: {
             'content-type': 'text/xml',
         },
+        method: 'PUT',
         body,
-        url: `${credentials.server}:2109/susi/account/login/*/*/*/`,
-        skipSslCertificateValidation: true
+        uri: `${credentials.server}:2109/susi/account/login/*/*/*/`,
+        json: false,
+        gzip: true,
+        rejectUnauthorized: false,
     };
     console.log(options);
-    const response = await this.helpers.httpRequest(options);
+    const response = await this.helpers.request(options);
     console.log(response);
     let authsid = "";
     return authsid;
