@@ -19,7 +19,7 @@ import {
 export async function globedomRequest (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	endpoint: string,
-	qs: IDataObject = {},
+	qs: string,
 	authsid: string = '',
 	method: string
 ) {

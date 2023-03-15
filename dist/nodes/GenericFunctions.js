@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tlogout = exports.getauthtoken = exports.globedomRequest = void 0;
 const xml2js_1 = require("xml2js");
-async function globedomRequest(endpoint, qs = {}, authsid = '', method) {
+async function globedomRequest(endpoint, qs, authsid = '', method) {
     const credentials = await this.getCredentials('globedom');
     const options = {
         headers: {
