@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getauthtoken = exports.globedomRequest = void 0;
+const xml2js_1 = require("xml2js");
 async function globedomRequest(endpoint, qs = {}, authsid = '') {
     const credentials = await this.getCredentials('globedom');
     const options = {
@@ -32,8 +33,14 @@ async function getauthtoken() {
         rejectUnauthorized: false,
     };
     console.log(options);
+    const parserOptions = Object.assign({
+        mergeAttrs: true,
+        explicitArray: false,
+    });
+    const parser = new xml2js_1.Parser(parserOptions);
     const response = await this.helpers.request(options);
-    console.log(response);
+    const json = await parser.parseStringPromise(response);
+    console.log(json);
     let authsid = "";
     return authsid;
 }

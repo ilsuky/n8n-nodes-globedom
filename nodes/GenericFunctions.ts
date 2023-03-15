@@ -5,6 +5,11 @@ import {
 	OptionsWithUri,
 } from 'request';
 
+import { 
+	Builder,
+	Parser 
+} from 'xml2js';
+
 import {
 	IDataObject,
 	ILoadOptionsFunctions,
@@ -56,8 +61,20 @@ export async function globedomRequest (
 	};
 
 	console.log(options);
+	
+	const parserOptions = Object.assign(
+		{
+			mergeAttrs: true,
+			explicitArray: false,
+		}
+	);
+	const parser = new Parser(parserOptions);
+	
 	const response = await this.helpers.request!(options);
-	console.log(response);
+	
+	const json = await parser.parseStringPromise(response as string);
+	
+	console.log(json);
 	let authsid : string = "";	
 	//console.log(authsid);		
 	return authsid;
