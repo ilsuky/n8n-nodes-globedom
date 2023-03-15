@@ -19,7 +19,7 @@ import {
 export async function globedomRequest (
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	endpoint: string,
-	qs: string,
+	body: string,
 	authsid: string = '',
 	method: string
 ) {
@@ -30,7 +30,7 @@ export async function globedomRequest (
 			'content-type': 'text/xml',
 		},
 		method,
-		qs,
+		body,
 		uri: `${credentials.server}:2109${endpoint}`,
 		rejectUnauthorized: false,
 	};
