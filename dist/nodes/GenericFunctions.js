@@ -15,6 +15,7 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     };
     const parserOptions = Object.assign({
         mergeAttrs: true,
+        trim: true
     });
     const parser = new xml2js_1.Parser(parserOptions);
     const response = await this.helpers.request(options);
@@ -26,13 +27,7 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     let rjson;
     var data = new Array();
     if (json.multiresponse) {
-        rjson = json.multiresponse.response;
-        for (let e = 0; e < rjson.length; e++) {
-            var data2 = new Array();
-            data2.push({ json: rjson[e] });
-            data.push(data2);
-        }
-        rejson = data;
+        rejson = json.multiresponse.response;
     }
     else {
         rejson = json.response;
