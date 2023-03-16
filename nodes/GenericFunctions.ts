@@ -40,7 +40,8 @@ export async function globedomRequest (
 	const parserOptions = Object.assign(
 		{
 			mergeAttrs: true,
-			trim: true
+			trim: true,
+			explicitArray: false
 		}
 	);
 	const parser = new Parser(parserOptions);

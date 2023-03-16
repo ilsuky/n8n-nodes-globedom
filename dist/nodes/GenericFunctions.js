@@ -15,7 +15,8 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     };
     const parserOptions = Object.assign({
         mergeAttrs: true,
-        trim: true
+        trim: true,
+        explicitArray: false
     });
     const parser = new xml2js_1.Parser(parserOptions);
     const response = await this.helpers.request(options);
