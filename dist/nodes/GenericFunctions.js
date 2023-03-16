@@ -15,13 +15,13 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     };
     const parserOptions = Object.assign({
         mergeAttrs: true,
-        explicitArray: false,
     });
     const parser = new xml2js_1.Parser(parserOptions);
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
     const logout = await tlogout.call(this, authsid);
     console.log(response);
+    console.log(json);
     let rejson;
     let rjson;
     var data = new Array();

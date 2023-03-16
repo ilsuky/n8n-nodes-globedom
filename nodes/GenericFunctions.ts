@@ -40,7 +40,6 @@ export async function globedomRequest (
 	const parserOptions = Object.assign(
 		{
 			mergeAttrs: true,
-			explicitArray: false,
 		}
 	);
 	const parser = new Parser(parserOptions);
@@ -49,6 +48,7 @@ export async function globedomRequest (
 	const logout = await tlogout.call(this,authsid);
 	
 	console.log(response);
+	console.log(json);
 	
 	let rejson;
 	let rjson;
