@@ -13,7 +13,6 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
         uri: `${credentials.server}:2109${endpoint}`,
         rejectUnauthorized: false,
     };
-    console.log(options);
     const parserOptions = Object.assign({
         mergeAttrs: true,
         explicitArray: false,
@@ -22,6 +21,7 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
     const logout = await tlogout.call(this, authsid);
+    console.log(response);
     let rjson;
     if (json.multiresponse) {
         rjson = json.multiresponse.response;
@@ -54,6 +54,7 @@ async function getauthtoken() {
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
     let authsid = json.response.token;
+    console.log(response);
     return authsid;
 }
 exports.getauthtoken = getauthtoken;

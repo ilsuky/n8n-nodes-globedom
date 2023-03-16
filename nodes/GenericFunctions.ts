@@ -35,7 +35,7 @@ export async function globedomRequest (
 		rejectUnauthorized: false,
 	};
 
-	console.log(options);
+	
 
 	const parserOptions = Object.assign(
 		{
@@ -47,6 +47,8 @@ export async function globedomRequest (
 	const response = await this.helpers.request!(options);
 	const json = await parser.parseStringPromise(response as string);
 	const logout = await tlogout.call(this,authsid);
+	
+	console.log(response);
 	
 	let rjson;
 	
@@ -90,6 +92,8 @@ export async function globedomRequest (
 	const response = await this.helpers.request!(options);
 	const json = await parser.parseStringPromise(response as string);
 	let authsid = json.response.token;
+	
+	console.log(response);
 	
 	return authsid;
 }

@@ -93,22 +93,22 @@ export class globedom implements INodeType {
 				options: [
 					{
 						name: 'Create',
-						value: 'contacts-create',
+						value: 'contact-create',
 					},				
 					{
 						name: 'Info',
-						value: 'contacts-info',
+						value: 'contact-info',
 					},
 					{
 						name: 'Update',
-						value: 'contacts-update',
+						value: 'contact-update',
 					},
 					{
 						name: 'Show All',
 						value: 'contacts-all',
 					},										
 				],
-				default: 'contacts-create',
+				default: 'contact-create',
 				description: 'Contact related requests',
 				displayOptions: {
 					show: {
@@ -260,7 +260,27 @@ export class globedom implements INodeType {
 				required: true,
 				description: 'List of name servers, delimited by colon',
 			},
-////// Contact		
+////// Contact
+			{
+				displayName: 'contact-handle',
+				name: 'contacthandle',
+				type: 'string',
+				displayOptions: {
+					show: {
+						requests:[
+							'contacts',
+						],						
+						contacts:[
+							'contact-info',
+							'contact-update',
+						],					
+					},
+				},
+				default: '',
+				required: false,
+				description: 'target TLD where this contact is intended to be used.',
+			},
+			
 			{
 				displayName: 'tld',
 				name: 'tld',
@@ -279,23 +299,6 @@ export class globedom implements INodeType {
 				required: false,
 				description: 'target TLD where this contact is intended to be used.',
 			},
-			{
-				displayName: 'name',
-				name: 'name',
-				type: 'string',
-				displayOptions: {
-					show: {
-						requests:[
-							'contacts',
-						],						
-						contacts:[
-							'contact-create',
-						],					
-					},
-				},
-				default: '',
-				description: 'full name (if empty, fname + lname will be used)',
-			},		
 			{
 				displayName: 'fname',
 				name: 'fname',
@@ -636,46 +639,71 @@ export class globedom implements INodeType {
 						returnData.push(newItem);												
 					}	
 
+					if (contacts === 'contacts-info') {
+						
+						const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '') as string;
+						const rbody = "";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/contact/info/" + contacthandle + "/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);												
+					}					
+
 					
 					if (contacts === 'contact-create') {
 
 						const tld = this.getNodeParameter('tld', itemIndex, '') as string;
-						const name = this.getNodeParameter('name', itemIndex, '') as string;
 						const fname = this.getNodeParameter('fname', itemIndex, '') as string;
 						const lname = this.getNodeParameter('lname', itemIndex, '') as string;
 						const organization = this.getNodeParameter('organization', itemIndex, '') as string;
 						
-						const address1 = this.getNodeParameter('address-1', itemIndex, '') as string;
+						const address = this.getNodeParameter('address', itemIndex, '') as string;
 						const city = this.getNodeParameter('city', itemIndex, '') as string;
 						const email = this.getNodeParameter('email', itemIndex, '') as string;
 						const postalcode = this.getNodeParameter('postal-code', itemIndex, '') as string;
 						const country = this.getNodeParameter('country', itemIndex, '') as string;
 						const phone = this.getNodeParameter('phone', itemIndex, '') as string;
 						
-						if( name ) {
-							//const rbody = {"tld": tld, "name": name, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
-							const newItem: INodeExecutionData = {
-								json: {},
-								binary: {},
-							};
-							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-							const rbody = "";
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-							returnData.push(newItem);
-						
-						} else {
-							//const rbody = {"tld": tld, "fname": fname, "lname": lname, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
-							const newItem: INodeExecutionData = {
-								json: {},
-								binary: {},
-							};
-							const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-							const rbody = "";
-							newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-							returnData.push(newItem);							
-						}
+						//const rbody = {"tld": tld, "fname": fname, "lname": lname, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						const endpoint = "/susi/contact/create/*/*/" + authsid + "/";
+						const rbody = "";
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						returnData.push(newItem);
 																				
-					}						
+					}	
+
+					if (contacts === 'contact-update') {
+					
+						const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '') as string;
+						const address = this.getNodeParameter('address', itemIndex, '') as string;
+						const city = this.getNodeParameter('city', itemIndex, '') as string;
+						const email = this.getNodeParameter('email', itemIndex, '') as string;
+						const postalcode = this.getNodeParameter('postal-code', itemIndex, '') as string;
+						const country = this.getNodeParameter('country', itemIndex, '') as string;
+						const phone = this.getNodeParameter('phone', itemIndex, '') as string;
+						
+						//const rbody = {"tld": tld, "fname": fname, "lname": lname, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						const endpoint = "/susi/contact/update/" + contacthandle + "/*/" + authsid + "/";
+						const rbody = "";
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						returnData.push(newItem);
+																				
+					}	
+					
 				}
 				
 				

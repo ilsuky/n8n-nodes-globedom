@@ -93,22 +93,22 @@ class globedom {
                     options: [
                         {
                             name: 'Create',
-                            value: 'contacts-create',
+                            value: 'contact-create',
                         },
                         {
                             name: 'Info',
-                            value: 'contacts-info',
+                            value: 'contact-info',
                         },
                         {
                             name: 'Update',
-                            value: 'contacts-update',
+                            value: 'contact-update',
                         },
                         {
                             name: 'Show All',
                             value: 'contacts-all',
                         },
                     ],
-                    default: 'contacts-create',
+                    default: 'contact-create',
                     description: 'Contact related requests',
                     displayOptions: {
                         show: {
@@ -260,6 +260,25 @@ class globedom {
                     description: 'List of name servers, delimited by colon',
                 },
                 {
+                    displayName: 'contact-handle',
+                    name: 'contacthandle',
+                    type: 'string',
+                    displayOptions: {
+                        show: {
+                            requests: [
+                                'contacts',
+                            ],
+                            contacts: [
+                                'contact-info',
+                                'contact-update',
+                            ],
+                        },
+                    },
+                    default: '',
+                    required: false,
+                    description: 'target TLD where this contact is intended to be used.',
+                },
+                {
                     displayName: 'tld',
                     name: 'tld',
                     type: 'string',
@@ -276,23 +295,6 @@ class globedom {
                     default: '',
                     required: false,
                     description: 'target TLD where this contact is intended to be used.',
-                },
-                {
-                    displayName: 'name',
-                    name: 'name',
-                    type: 'string',
-                    displayOptions: {
-                        show: {
-                            requests: [
-                                'contacts',
-                            ],
-                            contacts: [
-                                'contact-create',
-                            ],
-                        },
-                    },
-                    default: '',
-                    description: 'full name (if empty, fname + lname will be used)',
                 },
                 {
                     displayName: 'fname',
@@ -581,38 +583,53 @@ class globedom {
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
+                    if (contacts === 'contacts-info') {
+                        const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
+                        const rbody = "";
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/contact/info/" + contacthandle + "/*/" + authsid + "/";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        returnData.push(newItem);
+                    }
                     if (contacts === 'contact-create') {
                         const tld = this.getNodeParameter('tld', itemIndex, '');
-                        const name = this.getNodeParameter('name', itemIndex, '');
                         const fname = this.getNodeParameter('fname', itemIndex, '');
                         const lname = this.getNodeParameter('lname', itemIndex, '');
                         const organization = this.getNodeParameter('organization', itemIndex, '');
-                        const address1 = this.getNodeParameter('address-1', itemIndex, '');
+                        const address = this.getNodeParameter('address', itemIndex, '');
                         const city = this.getNodeParameter('city', itemIndex, '');
                         const email = this.getNodeParameter('email', itemIndex, '');
                         const postalcode = this.getNodeParameter('postal-code', itemIndex, '');
                         const country = this.getNodeParameter('country', itemIndex, '');
                         const phone = this.getNodeParameter('phone', itemIndex, '');
-                        if (name) {
-                            const newItem = {
-                                json: {},
-                                binary: {},
-                            };
-                            const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-                            const rbody = "";
-                            newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-                            returnData.push(newItem);
-                        }
-                        else {
-                            const newItem = {
-                                json: {},
-                                binary: {},
-                            };
-                            const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-                            const rbody = "";
-                            newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-                            returnData.push(newItem);
-                        }
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/contact/create/*/*/" + authsid + "/";
+                        const rbody = "";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+                        returnData.push(newItem);
+                    }
+                    if (contacts === 'contact-update') {
+                        const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
+                        const address = this.getNodeParameter('address', itemIndex, '');
+                        const city = this.getNodeParameter('city', itemIndex, '');
+                        const email = this.getNodeParameter('email', itemIndex, '');
+                        const postalcode = this.getNodeParameter('postal-code', itemIndex, '');
+                        const country = this.getNodeParameter('country', itemIndex, '');
+                        const phone = this.getNodeParameter('phone', itemIndex, '');
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/contact/update/" + contacthandle + "/*/" + authsid + "/";
+                        const rbody = "";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+                        returnData.push(newItem);
                     }
                 }
             }
