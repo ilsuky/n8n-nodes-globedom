@@ -22,14 +22,22 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     const json = await parser.parseStringPromise(response);
     const logout = await tlogout.call(this, authsid);
     console.log(response);
+    let rejson;
     let rjson;
+    var data = new Array();
     if (json.multiresponse) {
         rjson = json.multiresponse.response;
+        for (let e = 0; e < rjson.length; e++) {
+            var data2 = new Array();
+            data2.push({ json: rjson[e] });
+            data.push(data2);
+        }
+        rejson = data;
     }
     else {
-        rjson = json.response;
+        rejson = json.response;
     }
-    return rjson;
+    return rejson;
 }
 exports.globedomRequest = globedomRequest;
 async function getauthtoken() {
