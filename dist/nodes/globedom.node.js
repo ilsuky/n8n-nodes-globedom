@@ -583,7 +583,7 @@ class globedom {
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
-                    if (contacts === 'contacts-info') {
+                    if (contacts === 'contact-info') {
                         const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
                         const rbody = "";
                         const newItem = {

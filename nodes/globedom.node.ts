@@ -639,7 +639,7 @@ export class globedom implements INodeType {
 						returnData.push(newItem);												
 					}	
 
-					if (contacts === 'contacts-info') {
+					if (contacts === 'contact-info') {
 						
 						const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '') as string;
 						const rbody = "";
