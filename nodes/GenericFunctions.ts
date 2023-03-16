@@ -1,5 +1,5 @@
 import {
-	IExecuteFunctions,
+	IExecuteFunctions
 } from 'n8n-core';
 import {
 	OptionsWithUri,
@@ -13,6 +13,7 @@ import {
 import {
 	IDataObject,
 	ILoadOptionsFunctions,
+	INodeExecutionData,
 	IHttpRequestOptions
 } from 'n8n-workflow';
 
@@ -52,12 +53,19 @@ export async function globedomRequest (
 	console.log(response);
 	console.log(json);
 	
-	let rejson;
+	let rejson = [];
 	let rjson;
-	var data = new Array();	
 	
 	if(json.multiresponse){
-		rejson = json.multiresponse.response;
+		rjson = json.multiresponse.response;
+		for(let dataIndex = 0; dataIndex < rjson.length; dataIndex++){
+			const newItem: INodeExecutionData = {
+				json: {},
+				binary: {},
+			}
+			newItem.json = rjson[dataIndex];
+			rejson.push(newItem);
+		}
 	} else {
 		rejson = json.response;
 	}
