@@ -55,9 +55,9 @@ export async function globedomRequest (
 	console.log(json);
 	
 	if(json.multiresponse){
-		dataObject.json = json.multiresponse.response;
+		dataObject.list = json.multiresponse.response;
 	} else {
-		dataObject.json = json.response;
+		dataObject.list = json.response;
 	}
 	
 	return dataObject;
