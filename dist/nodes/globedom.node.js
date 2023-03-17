@@ -531,13 +531,16 @@ class globedom {
                     const domains = this.getNodeParameter('domains', 0, '');
                     if (domains === 'domain-all') {
                         const rbody = "";
-                        const newItem = {
-                            json: {},
-                            binary: {},
-                        };
                         const endpoint = "/susi/domain/all/*/*/" + authsid + "/";
-                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-                        returnData.push(newItem);
+                        const response = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        for (let dataIndex = 0; dataIndex < response.length; dataIndex++) {
+                            const newItem = {
+                                json: {},
+                                binary: {},
+                            };
+                            newItem.json = response[dataIndex];
+                            returnData.push(newItem);
+                        }
                     }
                     if (domains === 'domain-check') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
@@ -629,13 +632,16 @@ class globedom {
                     const contacts = this.getNodeParameter('contacts', 0, '');
                     if (contacts === 'contacts-all') {
                         const rbody = "";
-                        const newItem = {
-                            json: {},
-                            binary: {},
-                        };
                         const endpoint = "/susi/contact/all/*/*/" + authsid + "/";
-                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-                        returnData.push(newItem);
+                        const response = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        for (let dataIndex = 0; dataIndex < response.length; dataIndex++) {
+                            const newItem = {
+                                json: {},
+                                binary: {},
+                            };
+                            newItem.json = response[dataIndex];
+                            returnData.push(newItem);
+                        }
                     }
                     if (contacts === 'contact-info') {
                         const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
@@ -690,13 +696,16 @@ class globedom {
                     const nameservers = this.getNodeParameter('nameservers', 0, '');
                     if (nameservers === 'nameservers-all') {
                         const rbody = "";
-                        const newItem = {
-                            json: {},
-                            binary: {},
-                        };
                         const endpoint = "/susi/nameserver/all/*/*/" + authsid + "/";
-                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
-                        returnData.push(newItem);
+                        const response = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        for (let dataIndex = 0; dataIndex < response.length; dataIndex++) {
+                            const newItem = {
+                                json: {},
+                                binary: {},
+                            };
+                            newItem.json = response[dataIndex];
+                            returnData.push(newItem);
+                        }
                     }
                     if (nameservers === 'nameservers-create') {
                         const hostname = this.getNodeParameter('hostname', itemIndex, '');
