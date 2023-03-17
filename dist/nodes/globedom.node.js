@@ -128,6 +128,10 @@ class globedom {
                             value: 'nameservers-create',
                         },
                         {
+                            name: 'Delete',
+                            value: 'nameservers-delete',
+                        },
+                        {
                             name: 'Show All',
                             value: 'nameservers-all',
                         },
@@ -470,8 +474,9 @@ class globedom {
                             requests: [
                                 'nameservers',
                             ],
-                            contacts: [
+                            nameservers: [
                                 'nameservers-create',
+                                'nameservers-delete',
                             ],
                         },
                     },
@@ -488,7 +493,7 @@ class globedom {
                             requests: [
                                 'nameservers',
                             ],
-                            contacts: [
+                            nameservers: [
                                 'nameservers-create',
                             ],
                         },
@@ -506,7 +511,7 @@ class globedom {
                             requests: [
                                 'nameservers',
                             ],
-                            contacts: [
+                            nameservers: [
                                 'nameservers-create',
                             ],
                         },
@@ -706,6 +711,17 @@ class globedom {
                             newItem.json = response[dataIndex];
                             returnData.push(newItem);
                         }
+                    }
+                    if (nameservers === 'nameservers-delete') {
+                        const hostname = this.getNodeParameter('hostname', itemIndex, '');
+                        const rbody = "";
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/nameserver/delete/" + hostname + "/*/" + authsid + "/";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        returnData.push(newItem);
                     }
                     if (nameservers === 'nameservers-create') {
                         const hostname = this.getNodeParameter('hostname', itemIndex, '');

@@ -126,7 +126,11 @@ export class globedom implements INodeType {
 					{
 						name: 'Create',
 						value: 'nameservers-create',
-					},				
+					},	
+					{
+						name: 'Delete',
+						value: 'nameservers-delete',
+					},						
 					{
 						name: 'Show All',
 						value: 'nameservers-all',
@@ -474,8 +478,9 @@ export class globedom implements INodeType {
 						requests:[
 							'nameservers',
 						],						
-						contacts:[
+						nameservers:[
 							'nameservers-create',
+							'nameservers-delete',
 						],					
 					},
 				},
@@ -492,7 +497,7 @@ export class globedom implements INodeType {
 						requests:[
 							'nameservers',
 						],						
-						contacts:[
+						nameservers:[
 							'nameservers-create',
 						],					
 					},
@@ -510,7 +515,7 @@ export class globedom implements INodeType {
 						requests:[
 							'nameservers',
 						],						
-						contacts:[
+						nameservers:[
 							'nameservers-create',
 						],					
 					},
@@ -787,6 +792,23 @@ export class globedom implements INodeType {
 							newItem.json = response[dataIndex];
 							returnData.push(newItem);
 						}	
+					}
+					
+					if (nameservers === 'nameservers-delete') {
+						
+						const hostname = this.getNodeParameter('hostname', itemIndex, '') as string;
+						
+						const rbody = "";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/nameserver/delete/" + hostname + "/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);
 					}
 					
 					if (nameservers === 'nameservers-create') {
