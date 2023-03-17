@@ -670,13 +670,13 @@ export class globedom implements INodeType {
 						const country = this.getNodeParameter('country', itemIndex, '') as string;
 						const phone = this.getNodeParameter('phone', itemIndex, '') as string;
 						
-						//const rbody = {"tld": tld, "fname": fname, "lname": lname, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
-						const newItem: INodeExecutionData = {
+												const newItem: INodeExecutionData = {
 							json: {},
 							binary: {},
 						};
 						const endpoint = "/susi/contact/create/*/*/" + authsid + "/";
-						const rbody = "";
+						const rbody = "<request><type>PERS</type><firstname>" + fname + "</firstname><lastname>" + lname + "</lastname><organization>" + organization + "</organization><address>" + address + "</address><pc>" + postalcode + "</pc><city>" + city + "</city><country>" + country + "</country><phone>" + phone + "</phone><email>" + email + "</email></request>";
+						
 						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
 						returnData.push(newItem);
 																				
@@ -692,13 +692,14 @@ export class globedom implements INodeType {
 						const country = this.getNodeParameter('country', itemIndex, '') as string;
 						const phone = this.getNodeParameter('phone', itemIndex, '') as string;
 						
-						//const rbody = {"tld": tld, "fname": fname, "lname": lname, "organization": organization, "address-1": address1, "city": city, "email": email, "postal-code": postalcode, "country": country, "phone": phone, "lang": "DE"};
+						
 						const newItem: INodeExecutionData = {
 							json: {},
 							binary: {},
 						};
 						const endpoint = "/susi/contact/update/" + contacthandle + "/*/" + authsid + "/";
-						const rbody = "";
+						const rbody = "<request><address>" + address + "</address><pc>" + postalcode + "</pc><city>" + city + "</city><country>" + country + "</country><phone>" + phone + "</phone><email>" + email + "</email></request>";
+						
 						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
 						returnData.push(newItem);
 																				

@@ -610,7 +610,7 @@ class globedom {
                             binary: {},
                         };
                         const endpoint = "/susi/contact/create/*/*/" + authsid + "/";
-                        const rbody = "";
+                        const rbody = "<request><type>PERS</type><firstname>" + fname + "</firstname><lastname>" + lname + "</lastname><organization>" + organization + "</organization><address>" + address + "</address><pc>" + postalcode + "</pc><city>" + city + "</city><country>" + country + "</country><phone>" + phone + "</phone><email>" + email + "</email></request>";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
                         returnData.push(newItem);
                     }
@@ -627,7 +627,7 @@ class globedom {
                             binary: {},
                         };
                         const endpoint = "/susi/contact/update/" + contacthandle + "/*/" + authsid + "/";
-                        const rbody = "";
+                        const rbody = "<request><address>" + address + "</address><pc>" + postalcode + "</pc><city>" + city + "</city><country>" + country + "</country><phone>" + phone + "</phone><email>" + email + "</email></request>";
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
                         returnData.push(newItem);
                     }
