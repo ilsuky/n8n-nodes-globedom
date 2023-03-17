@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tlogout = exports.getauthtoken = exports.globedomRequest = void 0;
 const xml2js_1 = require("xml2js");
+const n8n_workflow_1 = require("n8n-workflow");
 async function globedomRequest(endpoint, body, authsid = '', method) {
     const credentials = await this.getCredentials('globedom');
     const options = {
@@ -19,19 +20,22 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
         explicitArray: false
     });
     const parser = new xml2js_1.Parser(parserOptions);
-    const response = await this.helpers.request(options);
-    const json = await parser.parseStringPromise(response);
-    const logout = await tlogout.call(this, authsid);
-    const dataObject = {};
-    console.log(response);
-    console.log(json);
-    if (json.multiresponse) {
-        dataObject.list = json.multiresponse.response;
+    try {
+        const response = await this.helpers.request(options);
+        const json = await parser.parseStringPromise(response);
+        const logout = await tlogout.call(this, authsid);
+        console.log(response);
+        console.log(json);
+        if (json.multiresponse) {
+            return json.multiresponse.response;
+        }
+        else {
+            return json.response;
+        }
     }
-    else {
-        dataObject.list = json.response;
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), { 'error': error });
     }
-    return dataObject;
 }
 exports.globedomRequest = globedomRequest;
 async function getauthtoken() {

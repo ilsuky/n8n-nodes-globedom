@@ -14,7 +14,8 @@ import {
 	IDataObject,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
-	IHttpRequestOptions
+	IHttpRequestOptions,
+	NodeApiError
 } from 'n8n-workflow';
 
 export async function globedomRequest (
@@ -46,21 +47,22 @@ export async function globedomRequest (
 		}
 	);
 	const parser = new Parser(parserOptions);
-	const response = await this.helpers.request!(options);
-	const json = await parser.parseStringPromise(response as string);
-	const logout = await tlogout.call(this,authsid);
-	const dataObject:IDataObject = {};
-	
-	console.log(response);
-	console.log(json);
-	
-	if(json.multiresponse){
-		dataObject.list = json.multiresponse.response;
-	} else {
-		dataObject.list = json.response;
-	}
-	
-	return dataObject;
+	try {	
+		const response = await this.helpers.request!(options);
+		const json = await parser.parseStringPromise(response as string);
+		const logout = await tlogout.call(this,authsid);
+		
+		console.log(response);
+		console.log(json);
+		
+		if(json.multiresponse){
+			return json.multiresponse.response;
+		} else {
+			return json.response;
+		}
+	} catch (error:any) {
+		throw new NodeApiError(this.getNode(), {'error':error});
+	}	
 }
 
 /**
