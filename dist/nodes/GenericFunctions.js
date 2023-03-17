@@ -22,25 +22,16 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     const response = await this.helpers.request(options);
     const json = await parser.parseStringPromise(response);
     const logout = await tlogout.call(this, authsid);
+    const dataObject = {};
     console.log(response);
     console.log(json);
-    let rejson = [];
-    let rjson;
     if (json.multiresponse) {
-        rjson = json.multiresponse.response;
-        for (let dataIndex = 0; dataIndex < rjson.length; dataIndex++) {
-            const newItem = {
-                json: {},
-                binary: {},
-            };
-            newItem.json = rjson[dataIndex];
-            rejson.push(newItem);
-        }
+        dataObject.json = json.multiresponse.response;
     }
     else {
-        rejson = json.response;
+        dataObject.json = json.response;
     }
-    return rejson;
+    return dataObject;
 }
 exports.globedomRequest = globedomRequest;
 async function getauthtoken() {

@@ -670,7 +670,7 @@ export class globedom implements INodeType {
 						const country = this.getNodeParameter('country', itemIndex, '') as string;
 						const phone = this.getNodeParameter('phone', itemIndex, '') as string;
 						
-												const newItem: INodeExecutionData = {
+						const newItem: INodeExecutionData = {
 							json: {},
 							binary: {},
 						};

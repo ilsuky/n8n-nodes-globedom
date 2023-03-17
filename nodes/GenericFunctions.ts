@@ -49,28 +49,18 @@ export async function globedomRequest (
 	const response = await this.helpers.request!(options);
 	const json = await parser.parseStringPromise(response as string);
 	const logout = await tlogout.call(this,authsid);
+	const dataObject:IDataObject = {};
 	
 	console.log(response);
 	console.log(json);
 	
-	let rejson = [];
-	let rjson;
-	
 	if(json.multiresponse){
-		rjson = json.multiresponse.response;
-		for(let dataIndex = 0; dataIndex < rjson.length; dataIndex++){
-			const newItem: INodeExecutionData = {
-				json: {},
-				binary: {},
-			}
-			newItem.json = rjson[dataIndex];
-			rejson.push(newItem);
-		}
+		dataObject.json = json.multiresponse.response;
 	} else {
-		rejson = json.response;
+		dataObject.json = json.response;
 	}
 	
-	return rejson;
+	return dataObject;
 }
 
 /**
