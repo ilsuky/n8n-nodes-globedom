@@ -47,6 +47,7 @@ export async function globedomRequest (
 		}
 	);
 	const parser = new Parser(parserOptions);
+	
 	try {	
 		const response = await this.helpers.request!(options);
 		const json = await parser.parseStringPromise(response as string);

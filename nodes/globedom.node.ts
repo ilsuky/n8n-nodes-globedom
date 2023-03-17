@@ -463,7 +463,62 @@ export class globedom implements INodeType {
 				default: '+43.',
 				required: true,
 				description: 'phone ex. +43.5223.5855',
-			},		
+			},
+////// Nameservers
+			{
+				displayName: 'hostname',
+				name: 'hostname',
+				type: 'string',
+				displayOptions: {
+					show: {
+						requests:[
+							'nameservers',
+						],						
+						contacts:[
+							'nameservers-create',
+						],					
+					},
+				},
+				default: '',
+				required: true,
+				description: 'domainname like ns1.globedom.com',
+			},	
+			{
+				displayName: 'ipv4',
+				name: 'ipv4',
+				type: 'string',
+				displayOptions: {
+					show: {
+						requests:[
+							'nameservers',
+						],						
+						contacts:[
+							'nameservers-create',
+						],					
+					},
+				},
+				default: '',
+				required: true,
+				description: 'ex. 1.2.3.4',
+			},	
+			{
+				displayName: 'ipv6',
+				name: 'ipv6',
+				type: 'string',
+				displayOptions: {
+					show: {
+						requests:[
+							'nameservers',
+						],						
+						contacts:[
+							'nameservers-create',
+						],					
+					},
+				},
+				default: '',
+				required: false,
+				description: 'ex. 4100:2100::11',
+			},				
 		]
 	};
 	
@@ -703,7 +758,46 @@ export class globedom implements INodeType {
 						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
 						returnData.push(newItem);
 																				
-					}	
+					}
+				}
+				//--------------------------------------------------------
+				// 				Nameservers
+				//--------------------------------------------------------					
+				if(requests == 'nameservers'){
+					const nameservers = this.getNodeParameter('nameservers',  0, '') as string;
+					
+					if (nameservers === 'nameservers-all') {
+						const rbody = "";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/nameserver/all/*/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);
+					}
+					
+					if (nameservers === 'nameservers-create') {
+						
+						const hostname = this.getNodeParameter('hostname', itemIndex, '') as string;
+						const ipv4 = this.getNodeParameter('ipv4', itemIndex, '') as string;
+						const ipv6 = this.getNodeParameter('ipv6', itemIndex, '') as string;
+						
+						const rbody = "<request><hostname>" + hostname + "</hostname><ip>" + ipv4 + "</ip><ipv6>" + ipv6 + "</ipv6></request>";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/nameserver/create/*/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						returnData.push(newItem);
+					}
 					
 				}
 				
