@@ -23,7 +23,6 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     try {
         const response = await this.helpers.request(options);
         const json = await parser.parseStringPromise(response);
-        const logout = await tlogout.call(this, authsid);
         console.log(response);
         console.log(json);
         if (json.multiresponse) {
