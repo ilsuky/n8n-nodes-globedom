@@ -638,6 +638,7 @@ class globedom {
                     if (contacts === 'contacts-all') {
                         const rbody = "";
                         const endpoint = "/susi/contact/all/*/*/" + authsid + "/";
+                        console.log('Check all Contacts');
                         const response = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         for (let dataIndex = 0; dataIndex < response.length; dataIndex++) {
                             const newItem = {

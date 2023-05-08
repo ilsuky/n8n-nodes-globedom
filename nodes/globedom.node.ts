@@ -694,6 +694,8 @@ export class globedom implements INodeType {
 						
 						const endpoint = "/susi/contact/all/*/*/" + authsid + "/";
 						
+						console.log('Check all Contacts');
+						
 						const response = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 
 						for(let dataIndex = 0; dataIndex<response.length;dataIndex++){
