@@ -22,10 +22,8 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
     const parser = new xml2js_1.Parser(parserOptions);
     try {
         const response = await this.helpers.request(options);
-        console.log(response);
-        response.parseString(response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, '&amp;'));
+        response.parseString(response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, ''));
         const json = await parser.parseStringPromise(response);
-        console.log(response);
         console.log(json);
         if (json.multiresponse) {
             return json.multiresponse.response;
