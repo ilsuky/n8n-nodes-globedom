@@ -51,9 +51,8 @@ export async function globedomRequest (
 	try {	
 		const response = await this.helpers.request!(options);
 		//console.log(response);
-		response.parseString(response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, ''));
 
-		const json = await parser.parseStringPromise(response as string);
+		const json = await parser.parseStringPromise(response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, '&amp;') as string);
 		/** const logout = await tlogout.call(this,authsid); */
 		
 		//console.log(response);
