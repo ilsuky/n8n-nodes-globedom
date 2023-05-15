@@ -72,6 +72,10 @@ class globedom {
                             value: 'domain-delete',
                         },
                         {
+                            name: 'Transfer',
+                            value: 'domain-transfer',
+                        },
+                        {
                             name: 'Show All',
                             value: 'domain-all',
                         },
@@ -106,6 +110,10 @@ class globedom {
                         {
                             name: 'Show All',
                             value: 'contacts-all',
+                        },
+                        {
+                            name: 'Get associated domains',
+                            value: 'getassociated',
                         },
                     ],
                     default: 'contact-create',
@@ -161,6 +169,7 @@ class globedom {
                                 'domain-check',
                                 'domain-update',
                                 'domain-delete',
+                                'domain-transfer',
                             ],
                         },
                     },
@@ -180,6 +189,7 @@ class globedom {
                             domains: [
                                 'domain-create',
                                 'domain-update',
+                                'domain-transfer',
                             ],
                         },
                     },
@@ -199,6 +209,7 @@ class globedom {
                             domains: [
                                 'domain-create',
                                 'domain-update',
+                                'domain-transfer',
                             ],
                         },
                     },
@@ -218,6 +229,7 @@ class globedom {
                             domains: [
                                 'domain-create',
                                 'domain-update',
+                                'domain-transfer',
                             ],
                         },
                     },
@@ -237,12 +249,31 @@ class globedom {
                             domains: [
                                 'domain-create',
                                 'domain-update',
+                                'domain-transfer',
                             ],
                         },
                     },
                     default: '',
                     required: true,
                     description: 'Technical contact handle',
+                },
+                {
+                    displayName: 'auth-code',
+                    name: 'authcode',
+                    type: 'string',
+                    displayOptions: {
+                        show: {
+                            requests: [
+                                'domains',
+                            ],
+                            domains: [
+                                'domain-transfer',
+                            ],
+                        },
+                    },
+                    default: '',
+                    required: true,
+                    description: 'Auth-Code by previous Provider',
                 },
                 {
                     displayName: 'ns-list',
@@ -256,6 +287,7 @@ class globedom {
                             domains: [
                                 'domain-create',
                                 'domain-update',
+                                'domain-transfer',
                             ],
                         },
                     },
@@ -275,30 +307,13 @@ class globedom {
                             contacts: [
                                 'contact-info',
                                 'contact-update',
+                                'getassociated',
                             ],
                         },
                     },
                     default: '',
                     required: false,
-                    description: 'target TLD where this contact is intended to be used.',
-                },
-                {
-                    displayName: 'tld',
-                    name: 'tld',
-                    type: 'string',
-                    displayOptions: {
-                        show: {
-                            requests: [
-                                'contacts',
-                            ],
-                            contacts: [
-                                'contact-create',
-                            ],
-                        },
-                    },
-                    default: '',
-                    required: false,
-                    description: 'target TLD where this contact is intended to be used.',
+                    description: '',
                 },
                 {
                     displayName: 'fname',
@@ -586,6 +601,30 @@ class globedom {
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
+                    if (domains === 'domain-transfer') {
+                        const domain = this.getNodeParameter('domain', itemIndex, '');
+                        const tld = getPublicSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
+                        const ownerc = this.getNodeParameter('ownerc', itemIndex, '');
+                        const billingc = this.getNodeParameter('billingc', itemIndex, '');
+                        const adminc = this.getNodeParameter('adminc', itemIndex, '');
+                        const techc = this.getNodeParameter('techc', itemIndex, '');
+                        const nslist = this.getNodeParameter('nslist', itemIndex, '');
+                        const authcode = this.getNodeParameter('authcode', itemIndex, '');
+                        var res = nslist.split(',');
+                        var nslistout = "";
+                        for (let itemIndex2 = 0; itemIndex2 < res.length; itemIndex2++) {
+                            nslistout += "<hostname>" + res[itemIndex2] + "</hostname>";
+                        }
+                        const rbody = "<request><owner>" + ownerc + "</owner><tech>" + techc + "</tech><admin>" + adminc + "</admin><billing>" + billingc + "</billing><password>" + authcode + "</password><nameservers>" + nslistout + "</nameservers></request>";
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/domain/transfer/" + tld + "/" + domainname + "/" + authsid + "/";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+                        returnData.push(newItem);
+                    }
                     if (domains === 'domain-create') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
@@ -649,6 +688,17 @@ class globedom {
                             returnData.push(newItem);
                         }
                     }
+                    if (contacts === 'getassociated') {
+                        const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
+                        const rbody = "";
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/contact/getassociated/" + contacthandle + "/*/" + authsid + "/";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+                        returnData.push(newItem);
+                    }
                     if (contacts === 'contact-info') {
                         const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '');
                         const rbody = "";
@@ -661,7 +711,6 @@ class globedom {
                         returnData.push(newItem);
                     }
                     if (contacts === 'contact-create') {
-                        const tld = this.getNodeParameter('tld', itemIndex, '');
                         const fname = this.getNodeParameter('fname', itemIndex, '');
                         const lname = this.getNodeParameter('lname', itemIndex, '');
                         const organization = this.getNodeParameter('organization', itemIndex, '');

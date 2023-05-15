@@ -70,7 +70,11 @@ export class globedom implements INodeType {
 					{
 						name: 'Delete',
 						value: 'domain-delete',
-					},					
+					},	
+					{
+						name: 'Transfer',
+						value: 'domain-transfer',
+					},						
 					{
 						name: 'Show All',
 						value: 'domain-all',
@@ -106,7 +110,11 @@ export class globedom implements INodeType {
 					{
 						name: 'Show All',
 						value: 'contacts-all',
-					},										
+					},	
+					{
+						name: 'Get associated domains',
+						value: 'getassociated',
+					},						
 				],
 				default: 'contact-create',
 				description: 'Contact related requests',
@@ -162,6 +170,7 @@ export class globedom implements INodeType {
 							'domain-check',
 							'domain-update',						
 							'domain-delete',						
+							'domain-transfer',						
 						],					
 					},
 				},
@@ -181,6 +190,7 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-update',							
+							'domain-transfer',							
 						],					
 					},
 				},
@@ -200,6 +210,7 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-update',						
+							'domain-transfer',						
 						],					
 					},
 				},
@@ -219,6 +230,7 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-update',							
+							'domain-transfer',							
 						],					
 					},
 				},
@@ -238,13 +250,32 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-update',							
+							'domain-transfer',							
 						],					
 					},
 				},
 				default: '',
 				required: true,
 				description: 'Technical contact handle',
-			},	
+			},
+			{
+				displayName: 'auth-code',
+				name: 'authcode',
+				type: 'string',
+				displayOptions: {
+					show: {
+						requests:[
+							'domains',
+						],						
+						domains:[
+							'domain-transfer',							
+						],					
+					},
+				},
+				default: '',
+				required: true,
+				description: 'Auth-Code by previous Provider',
+			},			
 			{
 				displayName: 'ns-list',
 				name: 'nslist',
@@ -257,6 +288,7 @@ export class globedom implements INodeType {
 						domains:[
 							'domain-create',
 							'domain-update',						
+							'domain-transfer',						
 						],					
 					},
 				},
@@ -277,31 +309,13 @@ export class globedom implements INodeType {
 						contacts:[
 							'contact-info',
 							'contact-update',
+							'getassociated',
 						],					
 					},
 				},
 				default: '',
 				required: false,
-				description: 'target TLD where this contact is intended to be used.',
-			},
-			
-			{
-				displayName: 'tld',
-				name: 'tld',
-				type: 'string',
-				displayOptions: {
-					show: {
-						requests:[
-							'contacts',
-						],						
-						contacts:[
-							'contact-create',
-						],					
-					},
-				},
-				default: '',
-				required: false,
-				description: 'target TLD where this contact is intended to be used.',
+				description: '',
 			},
 			{
 				displayName: 'fname',
@@ -619,6 +633,37 @@ export class globedom implements INodeType {
 						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
 						returnData.push(newItem);												
 					}
+
+					if (domains === 'domain-transfer') {
+						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
+						
+						const ownerc = this.getNodeParameter('ownerc', itemIndex, '') as string;
+						const billingc = this.getNodeParameter('billingc', itemIndex, '') as string;
+						const adminc = this.getNodeParameter('adminc', itemIndex, '') as string;
+						const techc = this.getNodeParameter('techc', itemIndex, '') as string;
+						const nslist = this.getNodeParameter('nslist', itemIndex, '') as string;
+						const authcode = this.getNodeParameter('authcode', itemIndex, '') as string;
+						
+						var res = nslist.split(',');
+						var nslistout = "";
+						for (let itemIndex2 = 0; itemIndex2 < res.length; itemIndex2++) {
+								nslistout += "<hostname>" + res[itemIndex2] + "</hostname>";
+						}
+						
+						const rbody = "<request><owner>" + ownerc + "</owner><tech>" + techc + "</tech><admin>" + adminc + "</admin><billing>" + billingc + "</billing><password>" + authcode + "</password><nameservers>" + nslistout + "</nameservers></request>";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/domain/transfer/" + tld + "/" + domainname + "/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						returnData.push(newItem);						
+					}
 										
 					if (domains === 'domain-create') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
@@ -708,6 +753,23 @@ export class globedom implements INodeType {
 						}												
 					}	
 
+					if (contacts === 'getassociated') {
+						
+						const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '') as string;
+						const rbody = "";
+						
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/contact/getassociated/" + contacthandle + "/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "GET");
+						returnData.push(newItem);												
+					}
+
+
 					if (contacts === 'contact-info') {
 						
 						const contacthandle = this.getNodeParameter('contacthandle', itemIndex, '') as string;
@@ -727,7 +789,6 @@ export class globedom implements INodeType {
 					
 					if (contacts === 'contact-create') {
 
-						const tld = this.getNodeParameter('tld', itemIndex, '') as string;
 						const fname = this.getNodeParameter('fname', itemIndex, '') as string;
 						const lname = this.getNodeParameter('lname', itemIndex, '') as string;
 						const organization = this.getNodeParameter('organization', itemIndex, '') as string;
