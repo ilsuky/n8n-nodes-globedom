@@ -260,7 +260,7 @@ export class globedom implements INodeType {
 			},
 			{
 				displayName: 'auth-code',
-				name: 'authcode',
+				name: 'Authcode',
 				type: 'string',
 				displayOptions: {
 					show: {

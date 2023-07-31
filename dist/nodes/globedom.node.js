@@ -259,7 +259,7 @@ class globedom {
                 },
                 {
                     displayName: 'auth-code',
-                    name: 'authcode',
+                    name: 'Authcode',
                     type: 'string',
                     displayOptions: {
                         show: {
