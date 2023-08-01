@@ -259,8 +259,8 @@ export class globedom implements INodeType {
 				description: 'Technical contact handle',
 			},
 			{
-				displayName: 'auth-code',
-				name: 'Authcode',
+				displayName: 'Auth-code',
+				name: 'authcode',
 				type: 'string',
 				displayOptions: {
 					show: {
