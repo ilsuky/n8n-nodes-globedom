@@ -55,7 +55,6 @@ export async function globedomRequest (
 		const json = await parser.parseStringPromise(response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, '&amp;') as string);
 		/** const logout = await tlogout.call(this,authsid); */
 		
-		//console.log(response);
 		console.log(json);
 		
 		if(json.multiresponse){
@@ -100,7 +99,7 @@ export async function globedomRequest (
 	const json = await parser.parseStringPromise(response as string);
 	let authsid = json.response.token;
 	
-	console.log(response);
+	//console.log(response);
 	
 	return authsid;
 }

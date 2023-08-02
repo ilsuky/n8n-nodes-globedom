@@ -74,7 +74,11 @@ export class globedom implements INodeType {
 					{
 						name: 'Transfer',
 						value: 'domain-transfer',
-					},						
+					},
+					{
+						name: 'Transfer-List',
+						value: 'domain-transferlist',
+					},							
 					{
 						name: 'Show All',
 						value: 'domain-all',
@@ -171,6 +175,7 @@ export class globedom implements INodeType {
 							'domain-update',						
 							'domain-delete',						
 							'domain-transfer',						
+							'domain-transferlist',						
 						],					
 					},
 				},
@@ -634,6 +639,24 @@ export class globedom implements INodeType {
 						returnData.push(newItem);												
 					}
 
+					if (domains === 'domain-transferlist') {
+						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
+						const tld = getPublicSuffix(domain);
+						const domainname = getDomainWithoutSuffix(domain);
+						
+						const rbody = "<request><wildcard>" + domainname + "</wildcard></request>";
+					
+						const newItem: INodeExecutionData = {
+							json: {},
+							binary: {},
+						};
+						
+						const endpoint = "/susi/domain/transferlist/*/*/" + authsid + "/";
+						
+						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						returnData.push(newItem);												
+					}
+					
 					if (domains === 'domain-transfer') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
 						const tld = getPublicSuffix(domain);
@@ -654,6 +677,8 @@ export class globedom implements INodeType {
 						
 						const rbody = "<request><owner>" + ownerc + "</owner><tech>" + techc + "</tech><admin>" + adminc + "</admin><billing>" + billingc + "</billing><password>" + authcode + "</password><nameservers>" + nslistout + "</nameservers></request>";
 						
+						console.log(rbody);
+						
 						const newItem: INodeExecutionData = {
 							json: {},
 							binary: {},
@@ -661,7 +686,7 @@ export class globedom implements INodeType {
 						
 						const endpoint = "/susi/domain/transfer/" + tld + "/" + domainname + "/" + authsid + "/";
 						
-						newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+						//newItem.json = await globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
 						returnData.push(newItem);						
 					}
 										

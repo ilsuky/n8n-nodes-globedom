@@ -76,6 +76,10 @@ class globedom {
                             value: 'domain-transfer',
                         },
                         {
+                            name: 'Transfer-List',
+                            value: 'domain-transferlist',
+                        },
+                        {
                             name: 'Show All',
                             value: 'domain-all',
                         },
@@ -170,6 +174,7 @@ class globedom {
                                 'domain-update',
                                 'domain-delete',
                                 'domain-transfer',
+                                'domain-transferlist',
                             ],
                         },
                     },
@@ -601,6 +606,19 @@ class globedom {
                         newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "GET");
                         returnData.push(newItem);
                     }
+                    if (domains === 'domain-transferlist') {
+                        const domain = this.getNodeParameter('domain', itemIndex, '');
+                        const tld = getPublicSuffix(domain);
+                        const domainname = getDomainWithoutSuffix(domain);
+                        const rbody = "<request><wildcard>" + domainname + "</wildcard></request>";
+                        const newItem = {
+                            json: {},
+                            binary: {},
+                        };
+                        const endpoint = "/susi/domain/transferlist/*/*/" + authsid + "/";
+                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
+                        returnData.push(newItem);
+                    }
                     if (domains === 'domain-transfer') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
                         const tld = getPublicSuffix(domain);
@@ -617,12 +635,12 @@ class globedom {
                             nslistout += "<hostname>" + res[itemIndex2] + "</hostname>";
                         }
                         const rbody = "<request><owner>" + ownerc + "</owner><tech>" + techc + "</tech><admin>" + adminc + "</admin><billing>" + billingc + "</billing><password>" + authcode + "</password><nameservers>" + nslistout + "</nameservers></request>";
+                        console.log(rbody);
                         const newItem = {
                             json: {},
                             binary: {},
                         };
                         const endpoint = "/susi/domain/transfer/" + tld + "/" + domainname + "/" + authsid + "/";
-                        newItem.json = await GenericFunctions_1.globedomRequest.call(this, endpoint, rbody, authsid, "PUT");
                         returnData.push(newItem);
                     }
                     if (domains === 'domain-create') {
