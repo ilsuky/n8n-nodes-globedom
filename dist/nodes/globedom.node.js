@@ -635,6 +635,7 @@ class globedom {
                             nslistout += "<hostname>" + res[itemIndex2] + "</hostname>";
                         }
                         const rbody = "<request><owner>" + ownerc + "</owner><tech>" + techc + "</tech><admin>" + adminc + "</admin><billing>" + billingc + "</billing><password>" + authcode + "</password><nameservers>" + nslistout + "</nameservers></request>";
+                        console.log(rbody);
                         const newItem = {
                             json: {},
                             binary: {},
