@@ -1,7 +1,5 @@
-import { IExecuteFunctions } from 'n8n-core';
-import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { globedomRequest, getauthtoken } from './GenericFunctions';
-import { parse } from 'tldts';
 
 export class globedom implements INodeType {
 	description: INodeTypeDescription = {
@@ -641,7 +639,6 @@ export class globedom implements INodeType {
 
 					if (domains === 'domain-transferlist') {
 						const domain = this.getNodeParameter('domain', itemIndex, '') as string;
-						const tld = getPublicSuffix(domain);
 						const domainname = getDomainWithoutSuffix(domain);
 						
 						const rbody = "<request><wildcard>" + domainname + "</wildcard></request>";

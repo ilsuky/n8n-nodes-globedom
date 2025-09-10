@@ -608,7 +608,6 @@ class globedom {
                     }
                     if (domains === 'domain-transferlist') {
                         const domain = this.getNodeParameter('domain', itemIndex, '');
-                        const tld = getPublicSuffix(domain);
                         const domainname = getDomainWithoutSuffix(domain);
                         const rbody = "<request><wildcard>" + domainname + "</wildcard></request>";
                         const newItem = {
