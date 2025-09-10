@@ -33,11 +33,9 @@ export async function globedomRequest(
     // type in n8n-workflow. If you really need to set a custom agent to
     // ignore TLS errors, you can add one via `agent` (not shown here).
     json: false,
-    agent: {
-      https: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    },
+    agent: new https.Agent({
+      rejectUnauthorized: false,
+    }),
   } as unknown as IHttpRequestOptions;
 
   const parserOptions = Object.assign({ mergeAttrs: true, trim: true, explicitArray: false });
@@ -77,11 +75,9 @@ export async function getauthtoken(this: IExecuteFunctions | ILoadOptionsFunctio
     body,
     url: `${credentials.server}:2109/susi/account/login/*/*/*/`,
     json: false,
-    agent: {
-      https: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    },
+    agent: new https.Agent({
+      rejectUnauthorized: false,
+    }),
   } as unknown as IHttpRequestOptions;
 
   const parserOptions = Object.assign({ mergeAttrs: true, explicitArray: false });
@@ -106,11 +102,9 @@ export async function tlogout(this: IExecuteFunctions | ILoadOptionsFunctions, a
     method: 'GET' as HttpMethod,
     url: `${credentials.server}:2109/susi/account/logout/*/*/${authsid}/`,
     json: false,
-    agent: {
-      https: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    },
+    agent: new https.Agent({
+      rejectUnauthorized: false,
+    }),
   } as unknown as IHttpRequestOptions;
 
   const parserOptions = Object.assign({ mergeAttrs: true, explicitArray: false });

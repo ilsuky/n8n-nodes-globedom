@@ -49,11 +49,9 @@ async function globedomRequest(endpoint, body, authsid = '', method) {
         body,
         url: `${credentials.server}:2109${endpoint}`,
         json: false,
-        agent: {
-            https: new https.Agent({
-                rejectUnauthorized: false,
-            }),
-        },
+        agent: new https.Agent({
+            rejectUnauthorized: false,
+        }),
     };
     const parserOptions = Object.assign({ mergeAttrs: true, trim: true, explicitArray: false });
     const parser = new xml2js_1.Parser(parserOptions);
@@ -81,11 +79,9 @@ async function getauthtoken() {
         body,
         url: `${credentials.server}:2109/susi/account/login/*/*/*/`,
         json: false,
-        agent: {
-            https: new https.Agent({
-                rejectUnauthorized: false,
-            }),
-        },
+        agent: new https.Agent({
+            rejectUnauthorized: false,
+        }),
     };
     const parserOptions = Object.assign({ mergeAttrs: true, explicitArray: false });
     const parser = new xml2js_1.Parser(parserOptions);
@@ -103,11 +99,9 @@ async function tlogout(authsid) {
         method: 'GET',
         url: `${credentials.server}:2109/susi/account/logout/*/*/${authsid}/`,
         json: false,
-        agent: {
-            https: new https.Agent({
-                rejectUnauthorized: false,
-            }),
-        },
+        agent: new https.Agent({
+            rejectUnauthorized: false,
+        }),
     };
     const parserOptions = Object.assign({ mergeAttrs: true, explicitArray: false });
     const parser = new xml2js_1.Parser(parserOptions);
